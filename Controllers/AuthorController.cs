@@ -43,15 +43,24 @@ namespace BookStoreMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Author author)
         {
-            try
+            if (ModelState.IsValid)
             {
-                _authorRepository.Add(author);
-                return RedirectToAction(nameof(Index));
+                try
+                {
+                    _authorRepository.Add(author);
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return View();
+                }
             }
-            catch
+            else
             {
+                ModelState.AddModelError("", "Add all required fields");
                 return View();
             }
+           
         }
 
         // GET: HomeController1/Edit/5
@@ -66,16 +75,25 @@ namespace BookStoreMVC.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Author author)
         {
-            try
+            if (ModelState.IsValid)
             {
-                _authorRepository.Update(id, author);
+                try
+                {
+                    _authorRepository.Update(id, author);
 
-                return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index));
+                }
+                catch
+                {
+                    return View();
+                }
             }
-            catch
+            else
             {
+                ModelState.AddModelError("", "Add all required fields");
                 return View();
             }
+           
         }
 
         // GET: HomeController1/Delete/5
